@@ -2,20 +2,21 @@ import 'react-native-gesture-handler';
 import { StyleSheet, Text, View, SafeAreaView, KeyboardAvoidingView, StatusBar } from 'react-native';
 import MyStack from './src/navigation/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
-
+import { Provider } from "./src/store/index";
 
 export default function App() {
   return (
-    <View style={{ flex: 1 }} >
+    <Provider>
 
-      <NavigationContainer>
-        <StatusBar />
-        <MyStack />
+      <View style={{ flex: 1 }} >
+        <NavigationContainer>
+          <StatusBar />
+          <MyStack />
+        </NavigationContainer>
+      </View>
+    </Provider>
 
-      </NavigationContainer>
-    </View>
-
-  );
+  );  
 }
 
 const styles = StyleSheet.create({

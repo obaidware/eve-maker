@@ -9,10 +9,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 
 export default function Home({ ...props }) {
-
     return (
         <View style={{ backgroundColor: '#fff' }} >
-
             <View
                 style={{
                     width: w('100%'),
@@ -22,14 +20,13 @@ export default function Home({ ...props }) {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                }}
-            >
+                }}>
                 <View style={{ width: '20%' }}>
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={{ marginLeft: 15 }}
                         onPress={() => alert("Open Menu")} >
-                        <Entypo name="dots-three-vertical" size={22} color="#fff" />
-                    </TouchableOpacity>
+                        <Entypo name="dots-three-vertical" size={22} color="orange" />
+                    </TouchableOpacity> */}
                 </View>
                 <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
                     <Text style={{ textAlign: 'center', fontSize: 20, color: '#fff', fontWeight: '700' }} >
@@ -47,55 +44,45 @@ export default function Home({ ...props }) {
                 </View>
             </View>
             <ScrollView>
-
-
-                {/* Search bar */}
-                <TouchableOpacity style={{ backgroundColor: '#fff' }} onPress={() => props.navigation.navigate("Search")} >
-                    <View style={{ width: '90%', padding: 10, flexDirection: 'row', backgroundColor: '#fff', borderRadius: 10, marginTop: 10, backgroundColor: 'white', alignSelf: 'center', elevation: 10 }} >
+                <View style={{ width: '90%', padding: 10, backgroundColor: '#fff', borderRadius: 10, marginTop: 10, backgroundColor: 'white', alignSelf: 'center', elevation: 10 }} >
+                    <TouchableOpacity style={{ backgroundColor: '#fff', flexDirection: 'row', }} onPress={() => props.navigation.navigate("Search")} >
                         <View style={{ width: '10%', justifyContent: 'center', }} >
                             <FontAwesome name="search" size={22} color="orange" />
                         </View>
                         <View style={{ width: '90%', justifyContent: 'center' }} >
                             <Text  >Search Your Venue Here...</Text>
                         </View>
-                    </View>
-                </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
 
                 {/* Further Components */}
                 <View style={{ width: '90%', alignSelf: 'center', marginTop: 20 }} >
                     <Text style={{ fontWeight: 'bold', marginBottom: 10, marginLeft: 10, fontSize: 18 }} >
                         News Feed
                     </Text>
-
-                    {[1, 2, 3, 4, 5, 6].map((item) => (
-                        <View style={{ width: '100%', elevation: 10, flexDirection: 'row', backgroundColor: '#fff', elevation: 10, marginTop: 10, marginBottom: 10, alignSelf: 'center', borderRadius: 10, padding: 10 }} >
-                            <View style={{ width: '35%' }} >
-
-                                <Image style={{ width: '100%', height: 100, borderRadius: 10 }} source={{ uri: 'https://media.istockphoto.com/photos/delicious-meal-picture-id1295387240?s=612x612' }} />
-                            </View>
-
-                            <View style={{ width: '63%', marginLeft: 10, paddingTop: 4, padding: 10 }}  >
-                                <TouchableOpacity onPress={() => props.navigation.navigate("Profile")} >
+                    {[1, 2, 3, 4].map((item, index) => (
+                        <View key={index} style={{ width: '100%', elevation: 10, flexDirection: 'row', backgroundColor: '#fff', elevation: 10, marginTop: 10, marginBottom: 10, alignSelf: 'center', borderRadius: 10, padding: 10 }} >
+                            <TouchableOpacity onPress={() => props.navigation.navigate("Profile")} style={{ flexDirection: 'row', }} >
+                                <View style={{ width: '35%' }} >
+                                    <Image style={{ width: '100%', height: 100, borderRadius: 10 }} source={{ uri: 'https://media.istockphoto.com/photos/delicious-meal-picture-id1295387240?s=612x612' }} />
+                                </View>
+                                <View style={{ width: '63%', marginLeft: 10, paddingTop: 4, padding: 10 }}  >
                                     <Text style={{ fontWeight: 'bold' }} >
                                         Profile Name
                                     </Text>
-                                </TouchableOpacity>
-
-                                <Text numberOfLines={2} style={{ fontSize: 14 }} >
-                                    loremloremloremloremloremloremloremloremloremloremlorem
-                                </Text>
-                                <View style={{ position: 'absolute', bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
-                                    <AntDesign name="star" size={20} color="orange" />
-                                    <Text style={{}} >
-                                        5.0 (30)
+                                    <Text numberOfLines={2} style={{ fontSize: 14 }} >
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                     </Text>
+                                    <View style={{ position: 'absolute', bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
+                                        <AntDesign name="star" size={20} color="orange" />
+                                        <Text style={{}} >
+                                            5.0 (30)
+                                        </Text>
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
-                    )
-                    )
-                    }
-
+                    ))}
                 </View>
             </ScrollView>
         </View >
