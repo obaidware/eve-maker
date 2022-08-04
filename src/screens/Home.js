@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image, ScrollView } from 'react-native';
 import Header from '../components/Header';
 import { w, h } from 'react-native-responsiveness';
 import { AntDesign } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import { fireDB } from '../config';
+import { getDocs, collection, query, where, onSnapshot } from 'firebase/firestore';
 
 export default function Home({ ...props }) {
+    const [venues, setVenues] = useState([]);
+    useEffect(() => {
+        getVenues()
+    }, [])
+    const getVenues = async () => {
+        console.log("getVenues")
+        let temp = []
+        const colRef = collection(fireDB, "venues")
+        const query = await getDocs(colRef)
+        query.forEach(doc => {
+            // push doc id to temp and doc.data() to temp
+            temp.push({ id: doc.id, ...doc.data() })
+        })
+        setVenues(temp)
+    }
     return (
         <View style={{ backgroundColor: '#fff' }} >
             <View
@@ -21,13 +38,7 @@ export default function Home({ ...props }) {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                <View style={{ width: '20%' }}>
-                    {/* <TouchableOpacity
-                        style={{ marginLeft: 15 }}
-                        onPress={() => alert("Open Menu")} >
-                        <Entypo name="dots-three-vertical" size={22} color="orange" />
-                    </TouchableOpacity> */}
-                </View>
+                <View style={{ width: '20%' }}></View>
                 <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
                     <Text style={{ textAlign: 'center', fontSize: 20, color: '#fff', fontWeight: '700' }} >
                         Home
@@ -60,23 +71,25 @@ export default function Home({ ...props }) {
                     <Text style={{ fontWeight: 'bold', marginBottom: 10, marginLeft: 10, fontSize: 18 }} >
                         News Feed
                     </Text>
-                    {[1, 2, 3, 4].map((item, index) => (
+                    {venues.map((item, index) => (
                         <View key={index} style={{ width: '100%', elevation: 10, flexDirection: 'row', backgroundColor: '#fff', elevation: 10, marginTop: 10, marginBottom: 10, alignSelf: 'center', borderRadius: 10, padding: 10 }} >
-                            <TouchableOpacity onPress={() => props.navigation.navigate("Profile")} style={{ flexDirection: 'row', }} >
+                            <TouchableOpacity onPress={() => props.navigation.navigate("Profile", {
+                                Vid: item.id,
+                            })} style={{ flexDirection: 'row', }} >
                                 <View style={{ width: '35%' }} >
-                                    <Image style={{ width: '100%', height: 100, borderRadius: 10 }} source={{ uri: 'https://media.istockphoto.com/photos/delicious-meal-picture-id1295387240?s=612x612' }} />
+                                    <Image style={{ width: '100%', height: 100, borderRadius: 10 }} source={{ uri: item.images[0] }} />
                                 </View>
                                 <View style={{ width: '63%', marginLeft: 10, paddingTop: 4, padding: 10 }}  >
                                     <Text style={{ fontWeight: 'bold' }} >
-                                        Profile Name
+                                        {item.venueName}
                                     </Text>
-                                    <Text numberOfLines={2} style={{ fontSize: 14 }} >
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    <Text numberOfLines={2} style={{ fontSize: 14, color: 'black' }} >
+                                        {item.description}
                                     </Text>
                                     <View style={{ position: 'absolute', bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
                                         <AntDesign name="star" size={20} color="orange" />
                                         <Text style={{}} >
-                                            5.0 (30)
+                                            {item.rating} ({item.totalMembers})
                                         </Text>
                                     </View>
                                 </View>

@@ -5,10 +5,83 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import CalendarPicker from 'react-native-calendar-picker';
 import moment from 'moment';
+import { fireDB } from '../config';
+import { getDocs, getDoc, collection, doc, query, where, onSnapshot, addDoc } from 'firebase/firestore';
+import * as SecureStore from 'expo-secure-store';
 
 
 export default function Booking({ ...props }) {
+    const [data, setData] = useState(props.route.params.data);
+
     const [selectedDate, setSelectedDate] = useState(null);
+
+
+    const [name, setName] = useState("")
+
+    const [starttime, setstartTime] = useState("")
+
+    const [endtime, setEndTime] = useState("")
+
+    const [guests, setGuests] = useState("")
+
+    const [perperson, setperPerson] = useState("")
+
+    const [location, setLocation] = useState(data.venueName)
+
+    // console.log(data)
+
+    const bookEvent = async () => {
+        let values = {}
+        let sa;
+        await SecureStore.getItemAsync("userId")
+            .then((user) => {
+                sa = JSON.parse(user)
+            });
+        console.log(sa)
+        if (sa !== "" || sa !== undefined || sa !== null) {
+
+            if (
+                name !== "" &&
+                starttime !== "" &&
+                endtime !== "" &&
+                guests !== "" &&
+                selectedDate !== null &&
+                location !== "" &&
+                perperson !== ""
+            ) {
+                values = {
+                    bookerid: sa,
+                    venue: data.venueName,
+                    venueId: props.route.params.vid,
+                    status: "onWait",
+                    nameEvent: name,
+                    perhead: perperson,
+                    starttime: starttime,
+                    endtime: endtime,
+                    guests: guests,
+                    location: location,
+                    date: new Date(selectedDate),
+                }
+                const colRef = collection(fireDB, 'bookings')
+                const addData = await addDoc(colRef, values)
+                    .then((res) => {
+                        console.log(res)
+                        props.navigation.replace('Events')
+                    }).catch((err) => {
+                        console.log(err)
+                        console.log("err")
+                    })
+
+            } else {
+                alert("Please fill all the fields")
+            }
+        } else {
+            props.navigation.navigate('Login')
+        }
+        // const colRef = collection(fireDB, "bookings")
+        // const docRef = await addDoc(colRef, values)
+    }
+
     return (
         <View style={{ backgroundColor: 'white', flex: 1 }} >
             <View style={{ width: '100%', padding: 15, backgroundColor: 'orange', flexDirection: 'row' }} >
@@ -29,13 +102,13 @@ export default function Booking({ ...props }) {
                 <View style={{ width: '100%', }} >
                     <Image
                         style={{ width: 400, height: 200 }}
-                        source={{ uri: 'https://media.istockphoto.com/photos/delicious-meal-picture-id1295387240?s=612x612' }}
+                        source={{ uri: data.images[0] }}
                     />
                 </View>
 
                 <View style={{ width: '90%', alignSelf: 'center', marginVertical: 10, backgroundColor: 'white', elevation: 10, padding: 10, borderRadius: 10 }} >
                     <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', }} >
-                        Grand Sapphire Hotel
+                        {data.venueName}
                     </Text>
                 </View>
                 <CalendarPicker
@@ -54,18 +127,18 @@ export default function Booking({ ...props }) {
                     </View>
 
                     <View style={{ marginVertical: 20 }} >
-                        {/* <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10 }} >Arrangement for </Text> */}
-                        <TextInput keyboardType="decimal-pad" placeholder='Number of guests' style={{ padding: 10, borderWidth: 1, borderRadius: 10, borderColor: 'grey' }} />
-
+                        <TextInput onChangeText={(val) => setName(val)} placeholder='Event Name' style={{ padding: 10, marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: 'grey' }} />
+                        <TextInput onChangeText={(val) => setstartTime(val)} placeholder='Event Start Time (XX:XX)' style={{ padding: 10, marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: 'grey' }} />
+                        <TextInput onChangeText={(val) => setEndTime(val)} placeholder='Event End Time (XX:XX)' style={{ padding: 10, marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: 'grey' }} />
+                        <TextInput onChangeText={(va) => setLocation(va)} value={location} placeholder='Event Location' style={{ padding: 10, marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: 'grey' }} />
+                        <TextInput onChangeText={(va) => setperPerson(va)} placeholder='Price Per Head' style={{ padding: 10, marginBottom: 10, borderWidth: 1, borderRadius: 10, borderColor: 'grey' }} />
+                        <TextInput onChangeText={(va) => setGuests(va)} keyboardType="decimal-pad" placeholder='Number of guests' style={{ padding: 10, borderWidth: 1, borderRadius: 10, borderColor: 'grey' }} />
                     </View>
                 </View>
 
             </ScrollView>
             <TouchableOpacity style={{ padding: 10, backgroundColor: 'orange' }}
-                onPress={() => {
-                    alert("Booking Successful")
-                    props.navigation.navigate('Home')
-                }}>
+                onPress={() => bookEvent()}>
                 <Text style={{ textAlign: 'center', color: 'white', fontSize: 17, fontWeight: 'bold' }} >Book Now</Text>
             </TouchableOpacity>
         </View>

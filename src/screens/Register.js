@@ -21,7 +21,9 @@ export default function Register({ ...props }) {
                     name: name,
                     email: email,
                     phone: phone,
-                    password: password
+                    password: password,
+                    role: "customer",
+                    admin: false
                 }
                 try {
                     const colRef = collection(fireDB, 'users');

@@ -10,12 +10,11 @@ export default function App() {
 
       <View style={{ flex: 1 }} >
         <NavigationContainer>
-          <StatusBar />
+          <StatusBar  />
           <MyStack />
         </NavigationContainer>
       </View>
     </Provider>
-
   );  
 }
 
