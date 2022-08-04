@@ -80,7 +80,7 @@ export default function Events({ ...props }) {
                         <>
                             <View style={{ width: '90%', padding: 10, backgroundColor: 'white', elevation: 10, marginBottom: 10, alignSelf: 'center', borderRadius: 10, marginTop: 20 }} >
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Name: {item.nameEvent} </Text>
-                                <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Date: {moment(item.date).format('lll')} </Text>
+                                <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Date: 28/7/2022 </Text>
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Start Time: {item.starttime} </Text>
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event End Time: {item.endtime} </Text>
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Location: {item.location} </Text>
