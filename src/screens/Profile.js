@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -157,7 +157,10 @@ export default function Profile({ ...props }) {
 
                                 <View style={{ flexDirection: 'row', width: '100%', marginTop: 20 }} >
                                     <View style={{ marginRight: 10, padding: 10, backgroundColor: 'white', elevation: 10, borderRadius: 10 }} >
-                                        <Ionicons name='call' size={24} />
+                                        <TouchableOpacity
+                                            onPress={() => Linking.openURL(`tel:${profileData.phone}`)}>
+                                            <Ionicons name='call' size={24} />
+                                        </TouchableOpacity>
                                     </View>
 
                                     <View style={{ justifyContent: 'center' }} >
@@ -168,7 +171,10 @@ export default function Profile({ ...props }) {
 
                                 <View style={{ flexDirection: 'row', width: '100%', marginTop: 20 }} >
                                     <View style={{ marginRight: 10, padding: 10, backgroundColor: 'white', elevation: 10, borderRadius: 10 }} >
-                                        <Entypo name='mail' size={24} />
+                                        <TouchableOpacity
+                                            onPress={() => Linking.openURL(`mailto:${profileData.email}`)}>
+                                            <Entypo name='mail' size={24} />
+                                        </TouchableOpacity>
                                     </View>
 
                                     <View style={{ justifyContent: 'center' }} >
