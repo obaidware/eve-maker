@@ -88,9 +88,14 @@ export default function Home({ ...props }) {
                                     </Text>
                                     <View style={{ position: 'absolute', bottom: 0, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
                                         <AntDesign name="star" size={20} color="orange" />
-                                        <Text style={{}} >
-                                            {item.rating} ({item.totalMembers})
-                                        </Text>
+                                        {item.rating !== 0 ?
+                                            <Text style={{}} >
+                                                {item.rating} ({item.totalMembers})
+                                            </Text>
+                                            : <Text style={{ marginLeft: 10 }} >
+                                                No Rating Yet
+                                            </Text>
+                                        }
                                     </View>
                                 </View>
                             </TouchableOpacity>

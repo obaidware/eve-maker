@@ -49,7 +49,7 @@ export default function Search({ ...props }) {
                 </View>
             </View>
 
-            <View style={{ width: '90%', alignSelf: 'center', padding: 10 }} >
+            {/* <View style={{ width: '90%', alignSelf: 'center', padding: 10 }} >
 
                 <Text style={{ fontWeight: 'bold', fontSize: 17 }} >
                     Popular Searches
@@ -69,7 +69,7 @@ export default function Search({ ...props }) {
                             )
                         })}
                 </View>
-            </View>
+            </View> */}
 
             {res.length !== 0 &&
                 res?.map((item, index) => (

@@ -6,9 +6,13 @@ import { fireDB } from '../config';
 import { getDocs, getDoc, collection, doc, query, where, updateDoc, addDoc } from 'firebase/firestore';
 import * as SecureStore from 'expo-secure-store';
 import moment from 'moment';
+import { Rating, AirbnbRating } from 'react-native-ratings';
+
+
 export default function Events({ ...props }) {
     const [data, setData] = useState([])
     const [review, setReview] = useState([])
+    const [rating, setRating] = useState(0)
 
     const submitReview = async (item) => {
         let sa;
@@ -61,6 +65,7 @@ export default function Events({ ...props }) {
         })
         setData(temp)
     }
+
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }} >
             <View style={{ width: '100%', padding: 15, backgroundColor: 'orange', flexDirection: 'row' }} >
@@ -71,19 +76,22 @@ export default function Events({ ...props }) {
                     </TouchableOpacity>
                 </View>
                 <View style={{ width: '90%', }} >
-                    <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 19, textAlign: 'center' }} >Booked Events</Text>
+                    <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 19, textAlign: 'center' }} >Bookings</Text>
                 </View>
             </View>
             <ScrollView>
                 {
                     data.map((item, index) => (
                         <>
+                            {/* moment().format("MMM Do YY"); */}
                             <View style={{ width: '90%', padding: 10, backgroundColor: 'white', elevation: 10, marginBottom: 10, alignSelf: 'center', borderRadius: 10, marginTop: 20 }} >
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Name: {item.nameEvent} </Text>
-                                <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Date: 28/7/2022 </Text>
+                                <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Date: {moment.unix(item?.date?.seconds).format("LL")} </Text>
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Start Time: {item.starttime} </Text>
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event End Time: {item.endtime} </Text>
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Location: {item.location} </Text>
+                                <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Price Per Head: {item.perhead} </Text>
+                                <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Total Guests: {item.guests} </Text>
                                 <Text style={{ fontWeight: 'bold', marginTop: 10 }} >Event Price: {item.perhead * item.guests} PKR/- </Text>
                                 {item.status !== "completed" ?
 
@@ -91,13 +99,16 @@ export default function Events({ ...props }) {
                                     :
                                     <>
                                         <Text style={{ marginTop: 20 }} >Leave a Review</Text>
-                                        <TouchableOpacity style={{ flexDirection: 'row' }} >
-                                            <Entypo name="star" size={20} color="orange" />
-                                            <Entypo name="star" size={20} color="orange" />
-                                            <Entypo name="star" size={20} color="orange" />
-                                            <Entypo name="star" size={20} color="orange" />
-                                            <Entypo name="star" size={20} color="orange" />
-                                        </TouchableOpacity>
+                                        <AirbnbRating
+                                            count={5}
+                                            reviews={["Terrible", "Hmm...", "Very Good", "Wow", "Amazing"]}
+                                            onFinishRating={(c) => {
+                                                setRating(c)
+                                            }}
+                                            defaultRating={5}
+                                            size={20}
+                                        />
+
                                         <TextInput
                                             onChangeText={(val) => setReview(val)}
                                             style={{ borderWidth: 1, borderColor: 'lightgrey', borderRadius: 10, padding: 10, marginVertical: 10 }}

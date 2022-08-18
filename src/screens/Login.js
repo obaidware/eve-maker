@@ -37,10 +37,11 @@ export default function Login({ ...props }) {
   useEffect(() => {
     checkUser();
   }, []);
-
+  console.log(state)
+  console.log("stateDJKASLJDLA")
   const loggedIn = () => {
     return (
-      <>
+      <View style={{ backgroundColor: 'white', flex: 1 }} >
         <View style={{ width: '100%', padding: 15, backgroundColor: 'orange', flexDirection: 'row' }} >
           <View style={{ width: '10%', justifyContent: 'center', alignItems: 'center' }}>
             <TouchableOpacity
@@ -56,7 +57,40 @@ export default function Login({ ...props }) {
 
         </View>
         <ScrollView>
-          <View style={{ width: '100%', }} >
+          <View style={{ width: '90%', alignSelf: 'center', flexDirection: 'row', backgroundColor: "white", elevation: 10, padding: 10, marginTop: 10, marginBottom: 10, borderRadius: 10 }} >
+            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18 }} >
+              Email:
+            </Text>
+            <Text style={{ color: 'black', fontSize: 18, marginLeft: 10 }} >
+              {userData?.email}
+            </Text>
+          </View>
+
+          <View style={{ width: '90%', alignSelf: 'center', flexDirection: 'row', backgroundColor: "white", elevation: 10, padding: 10, marginTop: 10, marginBottom: 10, borderRadius: 10 }} >
+            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18 }} >
+              Name:
+            </Text>
+            <Text style={{ color: 'black', fontSize: 18, marginLeft: 10 }} >
+              {userData?.name}
+            </Text>
+          </View>
+
+          <View style={{ width: '90%', alignSelf: 'center', flexDirection: 'row', backgroundColor: "white", elevation: 10, padding: 10, marginTop: 10, marginBottom: 10, borderRadius: 10 }} >
+            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18 }} >
+              Phone:
+            </Text>
+            <Text style={{ color: 'black', fontSize: 18, marginLeft: 10 }} >
+              {userData?.phone}
+            </Text>
+          </View>
+
+          <View style={{ width: '90%', alignSelf: 'center', flexDirection: 'row', backgroundColor: "white", elevation: 10, padding: 10, marginTop: 10, marginBottom: 10, borderRadius: 10 }} >
+            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18 }} >
+              Password:
+            </Text>
+            <Text style={{ color: 'black', fontSize: 18, marginLeft: 10 }} >
+              {userData?.password?.replace(/./g, '*')}
+            </Text>
           </View>
         </ScrollView>
 
@@ -83,7 +117,7 @@ export default function Login({ ...props }) {
             Logout
           </Text>
         </TouchableOpacity>
-      </>
+      </View>
     )
   }
 
@@ -100,12 +134,13 @@ export default function Login({ ...props }) {
 
         if (querySnapshot.size > 0) {
 
-          console.log(querySnapshot.docs[0].data())
+          // console.log(querySnapshot.docs[0].data())
 
-          console.log(querySnapshot.docs[0].id)
+          // console.log(querySnapshot.docs[0].id)
           await SecureStore.setItemAsync('userId', JSON.stringify(querySnapshot.docs[0].id));
           await SecureStore.setItemAsync('userData', JSON.stringify(querySnapshot.docs[0].data()));
           checkUser();
+          props.navigation.navigate("Home")
         } else {
 
           alert("Email Or Password is Wrong!")
